@@ -1419,14 +1419,18 @@ footer p {
   background: var(--surface-container);
 }
 
-.navigation-bar a,
-.navigation-rail a,
-.navigation-drawer a {
+.navigation-bar button,
+.navigation-rail button:not(.rail-fab),
+.navigation-drawer button {
+  border: 0;
   color: var(--on-surface-variant);
+  font: inherit;
+  text-align: inherit;
   text-decoration: none;
+  background: transparent;
 }
 
-.navigation-bar a {
+.navigation-bar button {
   display: flex;
   gap: 3px;
   align-items: center;
@@ -1436,7 +1440,7 @@ footer p {
   font-weight: 700;
 }
 
-.navigation-bar a span {
+.navigation-bar button span {
   display: grid;
   min-width: 50px;
   height: 27px;
@@ -1445,11 +1449,11 @@ footer p {
   font-size: 15px;
 }
 
-.navigation-bar a.active {
+.navigation-bar button.active {
   color: var(--on-surface);
 }
 
-.navigation-bar a.active span {
+.navigation-bar button.active span {
   color: var(--on-secondary-container);
   background: var(--secondary-container);
 }
@@ -1478,7 +1482,7 @@ footer p {
   font-size: 18px;
 }
 
-.navigation-rail a {
+.navigation-rail button:not(.rail-fab) {
   display: flex;
   gap: 3px;
   align-items: center;
@@ -1486,7 +1490,7 @@ footer p {
   font-size: 7px;
 }
 
-.navigation-rail a span {
+.navigation-rail button:not(.rail-fab) span {
   display: grid;
   width: 52px;
   height: 31px;
@@ -1495,7 +1499,7 @@ footer p {
   font-size: 14px;
 }
 
-.navigation-rail a.active span {
+.navigation-rail button.active span {
   color: var(--on-secondary-container);
   background: var(--secondary-container);
 }
@@ -1515,7 +1519,7 @@ footer p {
   font-size: 12px;
 }
 
-.navigation-drawer a {
+.navigation-drawer button {
   display: flex;
   gap: 11px;
   align-items: center;
@@ -1526,7 +1530,7 @@ footer p {
   font-weight: 700;
 }
 
-.navigation-drawer a.active {
+.navigation-drawer button.active {
   color: var(--on-secondary-container);
   background: var(--secondary-container);
 }
@@ -1820,6 +1824,7 @@ footer p {
   width: 136px;
   height: 136px;
   margin: 16px auto;
+  border: 0;
   border-radius: 50%;
   background: var(--surface-container-highest);
 }
@@ -1867,7 +1872,15 @@ footer p {
 .demo-card {
   min-height: 120px;
   padding: 16px;
+  border: 1px solid transparent;
   border-radius: 14px;
+  color: var(--on-surface);
+  text-align: left;
+}
+
+.demo-card.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 22%, transparent);
 }
 
 .demo-card > span,
@@ -1910,9 +1923,15 @@ footer p {
   padding: 8px 12px;
 }
 
+.demo-list > div.selected {
+  background: color-mix(in srgb, var(--primary-container) 55%, transparent);
+}
+
 .demo-list hr {
+  grid-column: 2 / -1;
+  width: 100%;
   height: 1px;
-  margin: 0 12px 0 58px;
+  margin: 0;
   border: 0;
   background: var(--outline-variant);
 }
@@ -1955,6 +1974,12 @@ footer p {
   background: transparent;
 }
 
+.demo-list .list-person {
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+}
+
 .carousel {
   display: grid;
   grid-template-columns: minmax(210px, 1.8fr) repeat(2, minmax(90px, 0.7fr));
@@ -1962,23 +1987,28 @@ footer p {
   overflow-x: auto;
 }
 
-.carousel article {
+.carousel button {
   display: flex;
   min-height: 150px;
   padding: 15px;
   border-radius: 18px;
   flex-direction: column;
   justify-content: flex-end;
+  border: 2px solid transparent;
   color: var(--on-secondary-container);
   background: var(--secondary-container);
 }
 
-.carousel article strong {
+.carousel button.selected {
+  border-color: var(--primary);
+}
+
+.carousel button strong {
   font-size: 24px;
 }
 
-.carousel article span,
-.carousel article p {
+.carousel button span,
+.carousel button p {
   margin-top: 5px;
   font-size: 8px;
 }
@@ -2155,7 +2185,15 @@ footer p {
   box-shadow: 0 -4px 18px color-mix(in srgb, var(--shadow) 12%, transparent);
 }
 
-.bottom-sheet > i {
+.sheet-drag-handle {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.bottom-sheet .sheet-drag-handle i {
   display: block;
   width: 34px;
   height: 4px;

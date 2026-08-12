@@ -97,6 +97,21 @@ export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState("Week");
   const [menuOpen, setMenuOpen] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(true);
+  const [notice, setNotice] = useState("Ready to explore components");
+  const [density, setDensity] = useState("Comfort");
+  const [favorite, setFavorite] = useState(false);
+  const [filterActive, setFilterActive] = useState(true);
+  const [inputChipVisible, setInputChipVisible] = useState(true);
+  const [activeDestination, setActiveDestination] = useState("Home");
+  const [selectedDate, setSelectedDate] = useState(12);
+  const [timePeriod, setTimePeriod] = useState("AM");
+  const [selectedCard, setSelectedCard] = useState("Safety briefing");
+  const [selectedPerson, setSelectedPerson] = useState("Piyush Arora");
+  const [carouselSlide, setCarouselSlide] = useState(0);
+  const [bannerVisible, setBannerVisible] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(true);
+  const [sheetOpen, setSheetOpen] = useState(true);
+  const [sideSheetOpen, setSideSheetOpen] = useState(true);
 
   const generated = useMemo(() => {
     const source = argbFromHex(seed);
@@ -152,6 +167,10 @@ export default function Home() {
     await navigator.clipboard.writeText(value);
     setCopied(name);
     window.setTimeout(() => setCopied(null), 1200);
+  }
+
+  function showNotice(message: string) {
+    setNotice(message);
   }
 
   return (
@@ -301,7 +320,7 @@ export default function Home() {
                   <h3>Good afternoon</h3>
                   <p>Your safety overview is ready.</p>
                 </div>
-                <button className="primary-button" type="button">Create task</button>
+                <button className="primary-button" onClick={() => showNotice("Task draft created")} type="button">Create task</button>
               </div>
 
               <div className="metric-grid">
@@ -329,7 +348,7 @@ export default function Home() {
                       <p className="preview-eyebrow">Priority queue</p>
                       <h4>Recent tasks</h4>
                     </div>
-                    <button className="text-button" type="button">View all</button>
+                    <button className="text-button" onClick={() => showNotice("Showing all priority tasks")} type="button">View all</button>
                   </div>
                   <div className="task-row">
                     <span className="task-icon">IN</span>
@@ -347,8 +366,8 @@ export default function Home() {
                   <p className="preview-eyebrow">Quick action</p>
                   <h4>Ready for a walkthrough?</h4>
                   <p>Start a guided inspection and capture findings as you move.</p>
-                  <button className="tonal-button" type="button">Begin walkthrough</button>
-                  <button className="outline-button" type="button">Open checklist</button>
+                  <button className="tonal-button" onClick={() => showNotice("Walkthrough started")} type="button">Begin walkthrough</button>
+                  <button className="outline-button" onClick={() => showNotice("Checklist opened")} type="button">Open checklist</button>
                 </article>
               </div>
             </div>
@@ -440,41 +459,41 @@ export default function Home() {
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Buttons</span>
                 <div className="button-showcase">
-                  <button className="m3-button filled" type="button">Filled</button>
-                  <button className="m3-button elevated" type="button">Elevated</button>
-                  <button className="m3-button tonal" type="button">Tonal</button>
-                  <button className="m3-button outlined" type="button">Outlined</button>
-                  <button className="m3-button text" type="button">Text</button>
+                  <button className="m3-button filled" onClick={() => showNotice("Filled button pressed")} type="button">Filled</button>
+                  <button className="m3-button elevated" onClick={() => showNotice("Elevated button pressed")} type="button">Elevated</button>
+                  <button className="m3-button tonal" onClick={() => showNotice("Tonal button pressed")} type="button">Tonal</button>
+                  <button className="m3-button outlined" onClick={() => showNotice("Outlined button pressed")} type="button">Outlined</button>
+                  <button className="m3-button text" onClick={() => showNotice("Text button pressed")} type="button">Text</button>
                 </div>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Icon buttons</span>
                 <div className="icon-button-row">
-                  <button className="m3-icon-button standard" aria-label="Favorite" type="button">♡</button>
-                  <button className="m3-icon-button filled" aria-label="Favorite selected" type="button">♥</button>
-                  <button className="m3-icon-button tonal" aria-label="Edit" type="button">✎</button>
-                  <button className="m3-icon-button outlined" aria-label="More options" type="button">•••</button>
+                  <button className="m3-icon-button standard" aria-label="Favorite" aria-pressed={favorite} onClick={() => { setFavorite((value) => !value); showNotice(favorite ? "Removed from favorites" : "Added to favorites"); }} type="button">{favorite ? "♥" : "♡"}</button>
+                  <button className="m3-icon-button filled" aria-label="Favorite selected" onClick={() => { setFavorite(true); showNotice("Added to favorites"); }} type="button">♥</button>
+                  <button className="m3-icon-button tonal" aria-label="Edit" onClick={() => showNotice("Edit mode enabled")} type="button">✎</button>
+                  <button className="m3-icon-button outlined" aria-label="More options" onClick={() => setMenuOpen(true)} type="button">•••</button>
                 </div>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Button groups</span>
                 <div className="button-group" role="group" aria-label="View density">
-                  <button type="button">Compact</button><button className="active" type="button">Comfort</button><button type="button">Wide</button>
+                  {["Compact", "Comfort", "Wide"].map((option) => <button className={density === option ? "active" : ""} onClick={() => { setDensity(option); showNotice(`${option} density selected`); }} key={option} type="button">{option}</button>)}
                 </div>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Split buttons</span>
                 <div className="split-button">
-                  <button type="button">Create task</button>
-                  <button aria-label="More create options" type="button">⌄</button>
+                  <button onClick={() => showNotice("Task draft created")} type="button">Create task</button>
+                  <button aria-label="More create options" onClick={() => setMenuOpen((value) => !value)} type="button">⌄</button>
                 </div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Floating action buttons</span>
                 <div className="fab-row">
-                  <button className="fab small" aria-label="Add" type="button">+</button>
-                  <button className="fab" aria-label="Edit" type="button">✎</button>
-                  <button className="fab extended" type="button"><span>＋</span> New inspection</button>
+                  <button className="fab small" aria-label="Add" onClick={() => showNotice("New item created")} type="button">+</button>
+                  <button className="fab" aria-label="Edit" onClick={() => showNotice("Edit mode enabled")} type="button">✎</button>
+                  <button className="fab extended" onClick={() => showNotice("New inspection started")} type="button"><span>＋</span> New inspection</button>
                 </div>
               </div>
             </div>
@@ -495,7 +514,7 @@ export default function Home() {
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Search</span>
-                <label className="search-bar"><span aria-hidden="true">⌕</span><input aria-label="Search components" placeholder="Search components" /><button aria-label="Voice search" type="button">◉</button></label>
+                <label className="search-bar"><span aria-hidden="true">⌕</span><input aria-label="Search components" onChange={(event) => showNotice(event.target.value ? `Searching for ${event.target.value}` : "Search cleared")} placeholder="Search components" /><button aria-label="Voice search" onClick={() => showNotice("Voice search activated")} type="button">◉</button></label>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Checkbox</span>
@@ -518,10 +537,10 @@ export default function Home() {
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Chips</span>
                 <div className="chip-row">
-                  <button className="m3-chip assist" type="button">✦ Assist</button>
-                  <button className="m3-chip filter selected" type="button">✓ Active</button>
-                  <button className="m3-chip input" type="button">Sector 4 <span>×</span></button>
-                  <button className="m3-chip suggestion" type="button">Suggested</button>
+                  <button className="m3-chip assist" onClick={() => showNotice("Assistant suggestion applied")} type="button">✦ Assist</button>
+                  <button className={`m3-chip filter ${filterActive ? "selected" : ""}`} aria-pressed={filterActive} onClick={() => { setFilterActive((value) => !value); showNotice(filterActive ? "Active filter removed" : "Active filter applied"); }} type="button">{filterActive && "✓ "}Active</button>
+                  {inputChipVisible && <button className="m3-chip input" onClick={() => { setInputChipVisible(false); showNotice("Sector 4 removed"); }} type="button">Sector 4 <span>×</span></button>}
+                  <button className="m3-chip suggestion" onClick={() => showNotice("Suggested filter added")} type="button">Suggested</button>
                 </div>
               </div>
               <div className="specimen specimen-wide">
@@ -541,7 +560,7 @@ export default function Home() {
             <div className="specimen-grid navigation-specimens">
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Top app bars</span>
-                <div className="demo-topbar"><button aria-label="Open navigation" type="button">☰</button><strong>Inspections</strong><span /><button aria-label="Search" type="button">⌕</button><button aria-label="More" type="button">⋮</button></div>
+                <div className="demo-topbar"><button aria-label="Open navigation" onClick={() => setSideSheetOpen(true)} type="button">☰</button><strong>Inspections</strong><span /><button aria-label="Search" onClick={() => showNotice("Search opened")} type="button">⌕</button><button aria-label="More" onClick={() => setMenuOpen((value) => !value)} type="button">⋮</button></div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Tabs</span>
@@ -549,23 +568,23 @@ export default function Home() {
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Navigation bar</span>
-                <nav className="navigation-bar" aria-label="Bottom navigation"><a className="active" href="#component-gallery-title"><span>⌂</span>Home</a><a href="#component-gallery-title"><span>✓</span>Tasks</a><a href="#component-gallery-title"><span>♙</span>People</a><a href="#component-gallery-title"><span>⚙</span>Settings</a></nav>
+                <nav className="navigation-bar" aria-label="Bottom navigation">{[["⌂", "Home"], ["✓", "Tasks"], ["♙", "People"], ["⚙", "Settings"]].map(([icon, destination]) => <button className={activeDestination === destination ? "active" : ""} onClick={() => { setActiveDestination(destination); showNotice(`${destination} selected`); }} key={destination} type="button"><span>{icon}</span>{destination}</button>)}</nav>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Navigation rail</span>
-                <nav className="navigation-rail" aria-label="Rail navigation"><button className="rail-fab" aria-label="Create" type="button">＋</button><a className="active" href="#component-gallery-title"><span>⌂</span>Home</a><a href="#component-gallery-title"><span>□</span>Tasks</a><a href="#component-gallery-title"><span>⚙</span>Settings</a></nav>
+                <nav className="navigation-rail" aria-label="Rail navigation"><button className="rail-fab" aria-label="Create" onClick={() => showNotice("New item created")} type="button">＋</button>{[["⌂", "Home"], ["□", "Tasks"], ["⚙", "Settings"]].map(([icon, destination]) => <button className={activeDestination === destination ? "active" : ""} onClick={() => { setActiveDestination(destination); showNotice(`${destination} selected`); }} key={destination} type="button"><span>{icon}</span>{destination}</button>)}</nav>
               </div>
               <div className="specimen">
                 <span className="specimen-label">Navigation drawer</span>
-                <nav className="navigation-drawer" aria-label="Drawer navigation"><strong>Theme Lab</strong><a className="active" href="#component-gallery-title"><span>⌂</span>Overview</a><a href="#component-gallery-title"><span>◫</span>Components</a><a href="#component-gallery-title"><span>◉</span>Tokens</a></nav>
+                <nav className="navigation-drawer" aria-label="Drawer navigation"><strong>Theme Lab</strong>{[["⌂", "Overview"], ["◫", "Components"], ["◉", "Tokens"]].map(([icon, destination]) => <button className={activeDestination === destination ? "active" : ""} onClick={() => { setActiveDestination(destination); showNotice(`${destination} selected`); }} key={destination} type="button"><span>{icon}</span>{destination}</button>)}</nav>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Bottom app bars</span>
-                <div className="demo-bottom-bar"><button aria-label="Attach" type="button">⌕</button><button aria-label="Delete" type="button">⌫</button><button aria-label="Archive" type="button">□</button><span /><button className="fab small" aria-label="Add" type="button">＋</button></div>
+                <div className="demo-bottom-bar"><button aria-label="Attach" onClick={() => showNotice("Attachment picker opened")} type="button">⌕</button><button aria-label="Delete" onClick={() => showNotice("Item moved to trash")} type="button">⌫</button><button aria-label="Archive" onClick={() => showNotice("Item archived")} type="button">□</button><span /><button className="fab small" aria-label="Add" onClick={() => showNotice("New item created")} type="button">＋</button></div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Toolbars</span>
-                <div className="toolbar"><button type="button">↶ Undo</button><button type="button">↷ Redo</button><span /><button type="button">B</button><button type="button"><i>I</i></button><button type="button">≡</button></div>
+                <div className="toolbar"><button onClick={() => showNotice("Undo complete")} type="button">↶ Undo</button><button onClick={() => showNotice("Redo complete")} type="button">↷ Redo</button><span /><button onClick={() => showNotice("Bold toggled")} type="button">B</button><button onClick={() => showNotice("Italic toggled")} type="button"><i>I</i></button><button onClick={() => showNotice("Alignment changed")} type="button">≡</button></div>
               </div>
             </div>
           </article>
@@ -579,7 +598,7 @@ export default function Home() {
               <div className="specimen specimen-wide menu-specimen">
                 <span className="specimen-label">Menus</span>
                 <button className="menu-trigger" onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} type="button">Actions <span>⌄</span></button>
-                {menuOpen && <div className="menu-popover"><button type="button"><span>✎</span>Edit</button><button type="button"><span>□</span>Duplicate</button><div /><button className="danger" type="button"><span>⌫</span>Delete</button></div>}
+                {menuOpen && <div className="menu-popover"><button onClick={() => { showNotice("Edit selected"); setMenuOpen(false); }} type="button"><span>✎</span>Edit</button><button onClick={() => { showNotice("Duplicate created"); setMenuOpen(false); }} type="button"><span>□</span>Duplicate</button><div /><button className="danger" onClick={() => { showNotice("Delete selected"); setMenuOpen(false); }} type="button"><span>⌫</span>Delete</button></div>}
                 {!menuOpen && <p className="specimen-hint">Select to preview the menu.</p>}
               </div>
               <div className="specimen">
@@ -588,7 +607,7 @@ export default function Home() {
               </div>
               <div className="specimen">
                 <span className="specimen-label">Tooltips</span>
-                <div className="tooltip-demo"><button aria-describedby="favorite-tooltip" type="button">♡</button><span role="tooltip" id="favorite-tooltip">Add to favorites</span></div>
+                <div className="tooltip-demo"><button aria-describedby="favorite-tooltip" onClick={() => { setFavorite((value) => !value); showNotice(favorite ? "Removed from favorites" : "Added to favorites"); }} type="button">{favorite ? "♥" : "♡"}</button><span role="tooltip" id="favorite-tooltip">{favorite ? "Saved to favorites" : "Add to favorites"}</span></div>
               </div>
             </div>
           </article>
@@ -603,14 +622,14 @@ export default function Home() {
                 <span className="specimen-label">Date pickers</span>
                 <div className="date-picker">
                   <div className="picker-title"><span>Select date</span><strong>Wed, Aug 12</strong></div>
-                  <div className="calendar-heading"><button aria-label="Previous month" type="button">‹</button><strong>August 2026</strong><button aria-label="Next month" type="button">›</button></div>
-                  <div className="calendar-grid"><b>S</b><b>M</b><b>T</b><b>W</b><b>T</b><b>F</b><b>S</b>{[9,10,11,12,13,14,15,16,17,18,19,20,21,22].map((day) => <button className={day === 12 ? "selected" : ""} key={day} type="button">{day}</button>)}</div>
-                  <div className="picker-actions"><button type="button">Cancel</button><button type="button">OK</button></div>
+                  <div className="calendar-heading"><button aria-label="Previous month" onClick={() => showNotice("Previous month selected")} type="button">‹</button><strong>August 2026</strong><button aria-label="Next month" onClick={() => showNotice("Next month selected")} type="button">›</button></div>
+                  <div className="calendar-grid"><b>S</b><b>M</b><b>T</b><b>W</b><b>T</b><b>F</b><b>S</b>{[9,10,11,12,13,14,15,16,17,18,19,20,21,22].map((day) => <button className={day === selectedDate ? "selected" : ""} onClick={() => { setSelectedDate(day); showNotice(`August ${day} selected`); }} key={day} type="button">{day}</button>)}</div>
+                  <div className="picker-actions"><button onClick={() => { setSelectedDate(12); showNotice("Date selection cancelled"); }} type="button">Cancel</button><button onClick={() => showNotice(`August ${selectedDate} confirmed`)} type="button">OK</button></div>
                 </div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Time pickers</span>
-                <div className="time-picker"><span>Select time</span><div className="time-input"><strong>09</strong><b>:</b><strong>30</strong><div><button className="active" type="button">AM</button><button type="button">PM</button></div></div><div className="clock-face"><i>12</i><i>3</i><i>6</i><i>9</i><span /></div><div className="picker-actions"><button type="button">Cancel</button><button type="button">OK</button></div></div>
+                <div className="time-picker"><span>Select time</span><div className="time-input"><strong>09</strong><b>:</b><strong>30</strong><div>{["AM", "PM"].map((period) => <button className={timePeriod === period ? "active" : ""} onClick={() => { setTimePeriod(period); showNotice(`${period} selected`); }} key={period} type="button">{period}</button>)}</div></div><button className="clock-face" aria-label="Set time to 9:30" onClick={() => showNotice(`09:30 ${timePeriod} selected`)} type="button"><i>12</i><i>3</i><i>6</i><i>9</i><span /></button><div className="picker-actions"><button onClick={() => showNotice("Time selection cancelled")} type="button">Cancel</button><button onClick={() => showNotice(`09:30 ${timePeriod} confirmed`)} type="button">OK</button></div></div>
               </div>
             </div>
           </article>
@@ -623,15 +642,15 @@ export default function Home() {
             <div className="specimen-grid surfaces-grid">
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Cards</span>
-                <div className="card-showcase"><article className="demo-card elevated"><span>Elevated</span><strong>Safety briefing</strong><p>12 participants</p></article><article className="demo-card filled"><span>Filled</span><strong>Site checklist</strong><p>8 of 10 complete</p></article><article className="demo-card outlined"><span>Outlined</span><strong>Equipment audit</strong><p>Due Friday</p></article></div>
+                <div className="card-showcase">{[["elevated", "Elevated", "Safety briefing", "12 participants"], ["filled", "Filled", "Site checklist", "8 of 10 complete"], ["outlined", "Outlined", "Equipment audit", "Due Friday"]].map(([style, label, title, detail]) => <button className={`demo-card ${style} ${selectedCard === title ? "selected" : ""}`} onClick={() => { setSelectedCard(title); showNotice(`${title} selected`); }} key={title} type="button"><span>{label}</span><strong>{title}</strong><p>{detail}</p></button>)}</div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Lists & divider</span>
-                <div className="demo-list"><div><span className="list-avatar">PA</span><p><strong>Piyush Arora</strong><small>Inspector · Sector 4</small></p><button aria-label="More options" type="button">⋮</button></div><hr /><div><span className="list-avatar alternate">SK</span><p><strong>Sarah Khan</strong><small>Supervisor · Workshop</small></p><button aria-label="More options" type="button">⋮</button></div></div>
+                <div className="demo-list">{[["PA", "Piyush Arora", "Inspector · Sector 4", ""], ["SK", "Sarah Khan", "Supervisor · Workshop", "alternate"]].map(([initials, person, detail, alternate], index) => <div className={selectedPerson === person ? "selected" : ""} key={person}><button className={`list-avatar ${alternate}`} aria-label={`Select ${person}`} onClick={() => { setSelectedPerson(person); showNotice(`${person} selected`); }} type="button">{initials}</button><button className="list-person" onClick={() => { setSelectedPerson(person); showNotice(`${person} selected`); }} type="button"><strong>{person}</strong><small>{detail}</small></button><button aria-label={`More options for ${person}`} onClick={() => { setSelectedPerson(person); setMenuOpen(true); }} type="button">⋮</button>{index === 0 && <hr />}</div>)}</div>
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Carousel</span>
-                <div className="carousel"><article className="carousel-feature"><span>Featured</span><strong>Weekly safety pulse</strong><p>Explore trends across every active site.</p></article><article><strong>24</strong><span>Open tasks</span></article><article><strong>87%</strong><span>Completion</span></article></div>
+                <div className="carousel">{[["Weekly safety pulse", "Explore trends across every active site."], ["24", "Open tasks"], ["87%", "Completion"]].map(([title, detail], index) => <button className={`${index === 0 ? "carousel-feature" : ""} ${carouselSlide === index ? "selected" : ""}`} onClick={() => { setCarouselSlide(index); showNotice(`${title} carousel card selected`); }} key={title} type="button">{index === 0 && <span>Featured</span>}<strong>{title}</strong><p>{detail}</p></button>)}</div>
               </div>
             </div>
           </article>
@@ -644,7 +663,7 @@ export default function Home() {
             <div className="specimen-grid">
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Banners</span>
-                <div className="banner"><span aria-hidden="true">!</span><p><strong>Connection restored</strong>Your changes are syncing again.</p><button type="button">Dismiss</button></div>
+                {bannerVisible ? <div className="banner"><span aria-hidden="true">!</span><p><strong>Connection restored</strong>Your changes are syncing again.</p><button onClick={() => { setBannerVisible(false); showNotice("Banner dismissed"); }} type="button">Dismiss</button></div> : <button className="m3-button tonal" onClick={() => setBannerVisible(true)} type="button">Show banner</button>}
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Progress indicators</span>
@@ -652,7 +671,7 @@ export default function Home() {
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Snackbars</span>
-                {snackbarVisible ? <div className="snackbar"><span>Theme saved</span><button type="button">Undo</button><button aria-label="Dismiss" onClick={() => setSnackbarVisible(false)} type="button">×</button></div> : <button className="m3-button tonal" onClick={() => setSnackbarVisible(true)} type="button">Show snackbar</button>}
+                {snackbarVisible ? <div className="snackbar"><span>{notice}</span><button onClick={() => showNotice("Action undone")} type="button">Undo</button><button aria-label="Dismiss" onClick={() => setSnackbarVisible(false)} type="button">×</button></div> : <button className="m3-button tonal" onClick={() => setSnackbarVisible(true)} type="button">Show snackbar</button>}
               </div>
             </div>
           </article>
@@ -665,15 +684,15 @@ export default function Home() {
             <div className="specimen-grid overlay-grid">
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Dialogs</span>
-                <div className="dialog"><span className="dialog-icon">✓</span><h4>Publish theme?</h4><p>This color scheme will become available to your team.</p><div><button type="button">Cancel</button><button type="button">Publish</button></div></div>
+                {dialogOpen ? <div className="dialog"><span className="dialog-icon">✓</span><h4>Publish theme?</h4><p>This color scheme will become available to your team.</p><div><button onClick={() => { setDialogOpen(false); showNotice("Publish cancelled"); }} type="button">Cancel</button><button onClick={() => { setDialogOpen(false); showNotice("Theme published"); }} type="button">Publish</button></div></div> : <button className="m3-button tonal" onClick={() => setDialogOpen(true)} type="button">Open dialog</button>}
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Bottom sheets</span>
-                <div className="bottom-sheet"><i /><strong>Share theme</strong><p>Choose where to send this generated color scheme.</p><div><button type="button"><span>✉</span>Email</button><button type="button"><span>↗</span>Copy link</button><button type="button"><span>↓</span>Export</button></div></div>
+                {sheetOpen ? <div className="bottom-sheet"><button className="sheet-drag-handle" aria-label="Close share sheet" onClick={() => setSheetOpen(false)} type="button"><i /></button><strong>Share theme</strong><p>Choose where to send this generated color scheme.</p><div><button onClick={() => showNotice("Share email opened")} type="button"><span>✉</span>Email</button><button onClick={() => showNotice("Share link copied")} type="button"><span>↗</span>Copy link</button><button onClick={() => showNotice("Theme exported")} type="button"><span>↓</span>Export</button></div></div> : <button className="m3-button tonal" onClick={() => setSheetOpen(true)} type="button">Open bottom sheet</button>}
               </div>
               <div className="specimen specimen-wide">
                 <span className="specimen-label">Side sheets</span>
-                <div className="side-sheet"><div className="sheet-canvas"><span>Workspace</span></div><aside><button aria-label="Close" type="button">×</button><strong>Theme details</strong><p>Fidelity scheme<br />Contrast {contrast.toFixed(1)}</p><button className="m3-button filled" type="button">Apply theme</button></aside></div>
+                {sideSheetOpen ? <div className="side-sheet"><div className="sheet-canvas"><span>Workspace</span></div><aside><button aria-label="Close" onClick={() => setSideSheetOpen(false)} type="button">×</button><strong>Theme details</strong><p>Fidelity scheme<br />Contrast {contrast.toFixed(1)}</p><button className="m3-button filled" onClick={() => showNotice("Theme applied to workspace")} type="button">Apply theme</button></aside></div> : <button className="m3-button tonal" onClick={() => setSideSheetOpen(true)} type="button">Open side sheet</button>}
               </div>
             </div>
           </article>
